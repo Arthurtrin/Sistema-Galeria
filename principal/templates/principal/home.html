@@ -1,0 +1,71 @@
+{% extends 'principal/base.html' %}
+{% load static %}
+{% block title %}Galeria{% endblock %}
+
+{% block content %}
+<style>
+  .card:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  .modal-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+  }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Galeria</h2>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for produto in produtos %}
+        <div class="col">
+  {% if produto.imagem %}
+    <div class="card h-100 shadow" data-bs-toggle="modal" data-bs-target="#imagemModal" data-img-url="{{ produto.imagem.url }}">
+  {% else %}
+    <div class="card h-100 shadow" data-bs-toggle="modal" data-bs-target="#imagemModal" data-img-url="{% static 'principal/img/logo.png' %}">
+  {% endif %}
+      {% if produto.imagem %}
+        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.nome }}">
+      {% else %}
+        <img src="{% static 'principal/img/logo.png' %}" class="card-img-top" alt="Imagem não disponível">
+      {% endif %}
+      <div class="card-body text-center">
+          <h5 class="card-title">{{ produto.nome }}</h5>
+          <p class="card-text text-muted">R$ {{ produto.preco|floatformat:2 }}</p>
+      </div>
+    </div>
+</div>
+        {% empty %}
+        <p class="text-center">Nenhum produto encontrado.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal de Imagem -->
+<div class="modal fade" id="imagemModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0 text-center">
+        <img id="modalImagem" src="" alt="Imagem ampliada" class="modal-img rounded">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const imagemModal = document.getElementById('imagemModal');
+  const modalImagem = document.getElementById('modalImagem');
+
+  imagemModal.addEventListener('show.bs.modal', function (event) {
+    const card = event.relatedTarget;
+    const imgUrl = card.getAttribute('data-img-url');
+    modalImagem.src = imgUrl;
+  });
+</script>
+{% endblock %}
