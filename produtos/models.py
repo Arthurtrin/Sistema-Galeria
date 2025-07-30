@@ -23,7 +23,6 @@ class Produto(models.Model):
     artista = models.ForeignKey(Artista, on_delete=models.SET_NULL, null=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
     localizacao = models.CharField(max_length=100, null=True)
-    preco = models.FloatField()
     descricao = models.TextField(blank=True, null=True)
     imagem = models.ImageField(upload_to='fotos_produtos/', default='fotos_produtos/logo.png')
 

@@ -1,0 +1,23 @@
+{% extends 'principal/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="card shadow-sm" style="width: 320px;">
+      <div class="card-body">
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center text-dark" href="{% url 'produtos:cadastrar_produto' %}">
+              <i class="fa-solid fa-plus me-2"></i>cadastrar
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center text-dark" href="{% url 'produtos:artista_tipoobra' %}">
+              <i class="fas fa-layer-group me-2"></i>Definir Artistas, Tipos de Obras e Status
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

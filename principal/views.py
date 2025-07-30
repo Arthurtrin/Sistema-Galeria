@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -19,6 +19,7 @@ def home(request):
         "artistas": artistas,
         "statuses": status})
 
+@login_required
 def filtro_produtos(request):
     status_id = request.GET.get('status', '')
     tipo_obra_id = request.GET.get('tipo_obra', '')
@@ -48,3 +49,8 @@ def filtro_produtos(request):
     }
 
     return render(request, 'principal/home.html', context)
+
+@login_required
+def detalhe_produto(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    return render(request, 'produtos/detalhe_produto.html', {'produto': produto})

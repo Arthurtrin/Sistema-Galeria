@@ -9,6 +9,20 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 @login_required
+def configuracao(request):
+    usuario = request.user
+    try:
+        perfil = Perfil.objects.get(usuario=usuario)
+    except Perfil.DoesNotExist:
+        mensagem = 'Perfil não encontrado'
+        return render(request, 'principal/erro.html', {'mensagem': mensagem})
+
+    if perfil.tipo not in ['gerenciador', 'supervisor']:
+        mensagem = 'Você não tem permissão para acessar esta página.'
+        return render(request, 'principal/erro.html', {'mensagem': mensagem})
+    return render(request, 'produtos/configuracao.html')
+
+@login_required
 def cadastrar_produto(request):
     if request.method == 'POST':
         form = ProdutoForm(request.POST, request.FILES)
@@ -22,17 +36,8 @@ def cadastrar_produto(request):
 @login_required
 def artista_tipoobra(request):
     usuario = request.user
-    try:
-        perfil = Perfil.objects.get(usuario=usuario)
-    except Perfil.DoesNotExist:
-        mensagem = 'Perfil não encontrado'
-        return render(request, 'principal/erro.html', {'mensagem': mensagem})
+    perfil = Perfil.objects.get(usuario=usuario)
 
-    if perfil.tipo not in ['gerenciador', 'supervisor']:
-        mensagem = 'Você não tem permissão para acessar esta página.'
-        return render(request, 'principal/erro.html', {'mensagem': mensagem})
-
-    
     # Recuperar o valor da aba ativa da URL, ou usar 'tipos' como padrão
     aba = request.GET.get('aba', 'tipos')
 
@@ -125,12 +130,3 @@ def cadastrar_status(request):
     else:
         return redirect('produtos:artista_tipoobra')
 
-
-def filtros_artistas(request):
-    pass
-
-def filtros_obras(request):
-    pass
-
-def filtros_status(request):
-    pass

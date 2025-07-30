@@ -1,0 +1,59 @@
+{% extends 'principal/base.html' %}
+{% load static %}
+{% block title %}Detalhes da Obra{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg rounded overflow-hidden">
+    {% if produto.imagem %}
+      <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+    {% else %}
+      <img src="{% static 'principal/img/logo.png' %}" alt="Imagem não disponível" class="img-fluid w-100" style="object-fit: cover; max-height: 400px;">
+    {% endif %}
+    
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4 fw-bold">{{ produto.nome }}</h3>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Código:</strong>
+          <p class="text-muted">{{ produto.codigo|default:"—" }}</p>
+        </div>
+        <div class="col-md-6">
+          <strong>Tipo da Obra:</strong>
+          <p class="text-muted">{{ produto.tipo_obra.nome|default:"—" }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Artista:</strong>
+          <p class="text-muted">{{ produto.artista.nome|default:"—" }}</p>
+        </div>
+        <div class="col-md-6">
+          <strong>Status:</strong>
+          <p class="text-muted">{{ produto.status.nome|default:"—" }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <strong>Localização:</strong>
+          <p class="text-muted">{{ produto.localizacao|default:"—" }}</p>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <strong>Descrição:</strong>
+          <p class="text-muted">{{ produto.descricao|default:"—" }}</p>
+        </div>
+      </div>
+
+      <div class="text-end">
+        <a href="{% url 'home' %}" class="btn btn-secondary">Voltar para a Galeria</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

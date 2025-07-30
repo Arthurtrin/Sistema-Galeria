@@ -75,9 +75,8 @@
                                 {{ form.nome.errors|striptags }}
                             </div>
                             {% endif %}
-                        </div>
-                    
-                        <div class="col-md-4">
+                        </div>                    
+                        <div class="col-md-6">
                             <label for="{{ form.tipo_obra.id_for_label }}" class="form-label-professional">Tipo de Obra</label>
                             {{ form.tipo_obra }}
                             {% if form.tipo_obra.errors %}
@@ -86,15 +85,6 @@
                             </div>
                             {% endif %}
                         </div>
-                        <div class="col-md-2">
-                            <label for="{{ form.preco.id_for_label }}" class="form-label-professional">Preço</label>
-                            {{ form.preco }}
-                            {% if form.preco.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.preco.errors|striptags }}
-                            </div>
-                            {% endif %}
-                            </div>
                     </div>
                     <div class="row g-2" style="margin-top: 5px;">
                       <div class="col-md-6">
