@@ -31,7 +31,7 @@ Bem-vindo ao **Sistema de Galeria**, uma aplicação web simples, moderna e func
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repo.git
+git clone https://github.com/Arthurtrin/Sistema-Galeria.git
 
 # Entre na pasta do projeto
 cd galeria
