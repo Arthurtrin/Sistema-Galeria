@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from usuarios.models import Perfil, Chave_Gerenciador
+from usuarios.models import Perfil
 from .forms import ProdutoForm, ArtistaForm, TipoObraForm, StatusForm
 from .models import Produto, Artista, TipoObra, Status
 from django.http import HttpResponseRedirect
@@ -106,6 +104,7 @@ def editar_tipoobra(request, tipo_id):
     else:
         return redirect('produtos:artista_tipoobra')
 
+@login_required
 def editar_status(request, status_id):
     status = get_object_or_404(Status, id=status_id)
     if request.method == 'POST':
@@ -116,11 +115,13 @@ def editar_status(request, status_id):
     else:
         return HttpResponseRedirect(reverse('produtos:artista_tipoobra') + '?aba=status')
 
+@login_required
 def excluir_status(request, status_id):
     status = get_object_or_404(Status, id=status_id)
     status.delete()
     return HttpResponseRedirect(reverse('produtos:artista_tipoobra') + '?aba=status')
 
+@login_required
 def cadastrar_status(request):
     if request.method == 'POST':
         form = StatusForm(request.POST)
@@ -130,3 +131,25 @@ def cadastrar_status(request):
     else:
         return redirect('produtos:artista_tipoobra')
 
+@login_required
+def pg_editar_produto(request):
+    produtos = Produto.objects.all().order_by('-id')
+    return render(request, 'produtos/pag_edt_produtos.html', {"produtos":produtos})
+
+@login_required
+def excluir_produto(request, id):
+    produto = get_object_or_404(Produto, id=id)
+    produto.delete()
+    return redirect('produtos:pg_editar_produto')
+
+@login_required
+def editar_produto(request, id):
+    produto = get_object_or_404(Produto, id=id)
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST, request.FILES, instance=produto)
+        if form.is_valid():
+            form.save()
+            return redirect('produtos:pg_editar_produto')
+    else:
+        form = ProdutoForm(instance=produto)
+    return render(request, 'produtos/editar_produto.html', {'form': form, 'produto': produto})

@@ -1,0 +1,67 @@
+{% extends 'principal/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Produtos Cadastrados</h2>
+
+  <table class="table table-bordered table-striped align-middle text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Artista</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for produto in produtos %}
+        <tr>
+          <td>
+            {% if produto.imagem %}
+              <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" style="width: 80px; height: 80px; object-fit: cover;">
+            {% else %}
+              <img src="https://via.placeholder.com/80x80?text=Sem+Imagem" alt="Sem imagem" style="width: 80px; height: 80px; object-fit: cover;">
+            {% endif %}
+          </td>
+          <td>{{ produto.nome }}</td>
+          <td>{{ produto.artista }}</td>
+          <td>
+            <a href="{% url 'produtos:editar_produto' produto.id %}" class="btn btn-sm btn-primary me-2" title="Editar">
+              <i class="fas fa-edit"></i>
+            </a>
+
+            <!-- Botão que abre o modal -->
+            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarExclusao{{ produto.id }}" title="Excluir">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <!-- Modal de confirmação -->
+        <div class="modal fade" id="confirmarExclusao{{ produto.id }}" tabindex="-1" aria-labelledby="modalLabel{{ produto.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel{{ produto.id }}">Confirmar exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+              </div>
+              <div class="modal-body">
+                Tem certeza que deseja excluir o produto <strong>{{ produto.nome }}</strong>?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="{% url 'produtos:excluir_produto' produto.id %}" class="btn btn-danger">Excluir</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <tr>
+          <td colspan="4">Nenhum produto cadastrado.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
