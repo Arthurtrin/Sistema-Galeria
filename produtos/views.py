@@ -9,7 +9,8 @@ from django.urls import reverse
 
 def ver_artista(request, id):
     artista = get_object_or_404(Artista, id=id)
-    return render(request, 'produtos/mostra_artista.html', {'artista':artista})
+    artistas = Artista.objects.all()
+    return render(request, 'produtos/mostra_artista.html', {'artista':artista, 'artistas':artistas})
 
 @login_required
 def configuracao(request):

@@ -126,7 +126,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownArtistas">
               {% for artista in artistas %}
                 <li>
-                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?artista={{ artista.id }}">
+                  <a class="dropdown-item" href="{% url 'produtos:ver_artista' artista.id %}">
                     {{ artista.nome }}
                   </a>
                 </li>
