@@ -1,7 +1,11 @@
 from django.db import models
 
 class Artista(models.Model):
-    nome = models.CharField(max_length=100)
+    nome = models.CharField(max_length=100, default='Nome não informado')
+    descricao = models.TextField(blank=True)
+    foto = models.ImageField(upload_to='fotos_artistas/', blank=True, null=True)
+    curriculo = models.FileField(upload_to='curriculos_artistas/', blank=True, null=True)
+
     def __str__(self):
         return self.nome
 

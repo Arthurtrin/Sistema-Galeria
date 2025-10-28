@@ -1,0 +1,44 @@
+{% extends 'principal/base.html' %}
+{% load static %}
+{% block title %}Tipos de Obra, Artistas e Status{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+    background-color: #f5f5f5;
+  }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-sm p-4" style="width: 100%; max-width: 500px;">
+      <h3 class="text-center mb-4">Cadastrar Artista</h3>
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do Artista</label>
+          <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="descricao" class="form-label">Descrição</label>
+          <textarea class="form-control" id="descricao" name="descricao" rows="4" placeholder="Descreva o artista..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="foto" class="form-label">Foto</label>
+          <input type="file" class="form-control" id="foto" name="foto" accept="image/*" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="curriculo" class="form-label">Currículo (PDF ou DOCX)</label>
+          <input type="file" class="form-control" id="curriculo" name="curriculo" accept=".pdf,.doc,.docx" required>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-dark">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endblock %}

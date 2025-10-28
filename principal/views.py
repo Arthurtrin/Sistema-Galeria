@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from usuarios.models import Perfil, Chave_Gerenciador
 from produtos.models import Produto, Artista, TipoObra, Status
+from itertools import groupby
 
 @login_required
 def home(request):
@@ -13,11 +14,16 @@ def home(request):
     tipos = TipoObra.objects.all()
     status = Status.objects.all()
     produtos = Produto.objects.all().order_by('-id')
+    artistas = Artista.objects.all().order_by('nome')
+    grupos = {}
+    for letra, grupo in groupby(artistas, key=lambda a: a.nome[0].upper()):
+        grupos[letra] = list(grupo)
     return render(request, 'principal/home.html', {
         "produtos": produtos,
         "tipos_obra": tipos,
         "artistas": artistas,
-        "statuses": status})
+        "statuses": status,
+        'grupos':grupos})
 
 @login_required
 def filtro_produtos(request):

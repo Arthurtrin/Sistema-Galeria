@@ -3,155 +3,117 @@
 
 {% block content %}
 <style>
-    .form-section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    color: #343a40;
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 0.25rem;
+  body {
+    background-color: #f5f5f5;
+  }
+  .card-form {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
   }
   .form-label {
     font-weight: 500;
-    font-size: 0.825rem;
+    font-size: 0.875rem;
   }
   .form-control, .form-select {
-    font-size: 0.825rem;
-    padding: 0.4rem 0.5rem;
+    font-size: 0.875rem;
+    padding: 0.45rem 0.6rem;
   }
-  .form-group {
-    margin-bottom: 0.75rem;
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
   }
-  .btn-lg {
-    padding: 0.4rem 1rem;
-    font-size: 0.9rem;
+  .btn-dark {
+    background-color: #1a1a1a;
+    border: none;
+    transition: 0.2s ease;
   }
-  .card-collapse {
-    margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    overflow: hidden;
-  }
-  .card-collapse .card-header {
-    background-color: #f8f9fa;
-    cursor: pointer;
-    font-weight: 500;
-    padding: 0.6rem 1rem;
-  }
-  .card-collapse .card-body {
-    padding: 1rem;
+  .btn-dark:hover {
+    background-color: #333;
   }
 </style>
 
-<div class="container my-4">
-  <h2 class="mb-3">Cadastrar Produto</h2>
-  <form method="post" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="card-form">
+    <h3 class="text-center mb-4">Cadastrar Produto</h3>
 
-    <div class="accordion" id="formAccordion">
-        <div class="card-collapse">
-            <div class="card-header" data-bs-toggle="collapse" data-bs-target="#identificacao" aria-expanded="true">
-            Identificação do Produto
-            </div>
-            <div id="identificacao" class="collapse show" data-bs-parent="#formAccordion">
-                <div class="card-body">
-                    <div class="row g-2">
-                        <div class="col-md-2">
-                            <label for="{{ form.codigo.id_for_label }}" class="form-label-professional">Código</label>
-                            {{ form.codigo }}
-                            {% if form.codigo.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.codigo.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
 
-                        <div class="col-md-4">
-                            <label for="{{ form.nome.id_for_label }}" class="form-label-professional">Nome</label>
-                            {{ form.nome }}
-                            {% if form.nome.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.nome.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>                    
-                        <div class="col-md-6">
-                            <label for="{{ form.tipo_obra.id_for_label }}" class="form-label-professional">Tipo de Obra</label>
-                            {{ form.tipo_obra }}
-                            {% if form.tipo_obra.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.tipo_obra.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row g-2" style="margin-top: 5px;">
-                      <div class="col-md-6">
-                            <label for="{{ form.localizacao.id_for_label }}" class="form-label-professional">Localização</label>
-                            {{ form.localizacao }}
-                            {% if form.localizacao.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.localizacao.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-3">
-                            <label for="{{ form.artista.id_for_label }}" class="form-label-professional">Artista</label>
-                            {{ form.artista }}
-                            {% if form.artista.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.artista.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                         <div class="col-md-3">
-                            <label for="{{ form.status.id_for_label }}" class="form-label-professional">Status</label>
-                            {{ form.status }}
-                            {% if form.status.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.status.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                  
-                    </div>
-                    <div class="row g-2" style="margin-top: 5px;">
-                      <div class="col-md-12">
-                            <label for="{{ form.descricao.id_for_label }}" class="form-label-professional">Descrição</label>
-                            {{ form.descricao }}
-                            {% if form.descricao.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.descricao.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row g-2" style="margin-top: 5px;">
-                      <div class="col-md-12">
-                            <label for="{{ form.imagem.id_for_label }}" class="form-label-professional">Imagem</label>
-                            {{ form.imagem }}
-                            {% if form.imagem.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.imagem.errors|striptags }}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+      <div class="mb-3">
+        <label for="{{ form.codigo.id_for_label }}" class="form-label">Código</label>
+        {{ form.codigo }}
+        {% if form.codigo.errors %}
+        <div class="invalid-feedback d-block">{{ form.codigo.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.nome.id_for_label }}" class="form-label">Nome</label>
+        {{ form.nome }}
+        {% if form.nome.errors %}
+        <div class="invalid-feedback d-block">{{ form.nome.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.tipo_obra.id_for_label }}" class="form-label">Tipo de Obra</label>
+        {{ form.tipo_obra }}
+        {% if form.tipo_obra.errors %}
+        <div class="invalid-feedback d-block">{{ form.tipo_obra.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.localizacao.id_for_label }}" class="form-label">Localização</label>
+        {{ form.localizacao }}
+        {% if form.localizacao.errors %}
+        <div class="invalid-feedback d-block">{{ form.localizacao.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="row g-2">
+        <div class="col-md-6">
+          <label for="{{ form.artista.id_for_label }}" class="form-label">Artista</label>
+          {{ form.artista }}
+          {% if form.artista.errors %}
+          <div class="invalid-feedback d-block">{{ form.artista.errors|striptags }}</div>
+          {% endif %}
         </div>
-        <div class="text-end mt-3">
-      <button type="submit" class="btn btn-dark-custom btn-sm w-auto">
-        <i class="fas fa-save me-2"></i>Salvar Cliente
-      </button>
-    </div>
-    </div>
-    
-    
-  </form>
-</div>
+        <div class="col-md-6">
+          <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+          {{ form.status }}
+          {% if form.status.errors %}
+          <div class="invalid-feedback d-block">{{ form.status.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      </div>
 
+      <div class="mb-3 mt-3">
+        <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição</label>
+        {{ form.descricao }}
+        {% if form.descricao.errors %}
+        <div class="invalid-feedback d-block">{{ form.descricao.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.imagem.id_for_label }}" class="form-label">Imagem</label>
+        {{ form.imagem }}
+        {% if form.imagem.errors %}
+        <div class="invalid-feedback d-block">{{ form.imagem.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-dark">
+          <i class="fas fa-save me-2"></i>Salvar Produto
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'principal/base.html' %}
+{% load static %}
+{% block title %}{{ artista.nome }}{% endblock %}
+
+{% block content %}
+<style>
+  .artista-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .artista-foto {
+    flex: 1 1 300px;
+    text-align: center;
+  }
+
+  .artista-foto img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .artista-info {
+    flex: 2 1 400px;
+  }
+
+  .artista-info h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .artista-descricao {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+  }
+
+  .curriculo-btn {
+    display: inline-block;
+    margin-top: 30px;
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .curriculo-btn:hover {
+    background-color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .artista-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .artista-info {
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="artista-container">
+  <div class="artista-foto">
+    {% if artista.foto %}
+      <img src="{{ artista.foto.url }}" alt="{{ artista.nome }}">
+    {% else %}
+      <img src="{% static 'principal/img/logo.png' %}" alt="Foto não disponível">
+    {% endif %}
+  </div>
+
+  <div class="artista-info">
+    <h1>{{ artista.nome }}</h1>
+    <div class="artista-descricao">{{ artista.descricao|linebreaks }}</div>
+
+    {% if artista.curriculo %}
+      <a href="{{ artista.curriculo.url }}" class="curriculo-btn" download>
+        <i class="fas fa-download"></i> Baixar Currículo
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -5,191 +5,210 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}Minha Empresa{% endblock %}</title>
-  <link rel="icon" href="{% static 'principal/img/logo.png' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'principal/img/logo2.png' %}" type="image/x-icon">
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Font Awesome para ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
     body {
-      display: flex;
-      min-height: 100vh;
-      font-family: 'Montserrat', sans-serif;
+      font-family: "Montserrat", sans-serif;
+      background-color: #f5f5f5;
+      color: #111;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Removido estilo da sidebar */
-
-    .content {
-      margin-left: 0; /* Ajustado pois não há sidebar */
-      padding: 1rem;
-      flex-grow: 1;
-      transition: all 0.3s;
+    .navbar {
+      background-color: #fff !important;
+      border-bottom: 1px solid #eee;
+      padding: 1rem 2rem;
     }
 
-    .content.full {
-      margin-left: 0;
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      color: #000 !important;
+      text-transform: uppercase;
     }
 
-    @media (max-width: 768px) {
-      .content {
-        margin-left: 0;
+    .navbar-nav .nav-link {
+      color: #000 !important;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin: 0 10px;
+      transition: opacity 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      opacity: 0.6;
+    }
+
+    /* Dropdown estilizado */
+    .dropdown-menu {
+      border: none;
+      border-radius: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-item {
+      color: #000;
+      font-weight: 400;
+      font-size: 0.95rem;
+      padding: 8px 20px;
+      transition: background 0.3s ease, opacity 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    main {
+      padding-top: 120px;
+      padding-bottom: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+    }
+
+    h1, h2, h3, h4 {
+      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: #000;
+    }
+
+    footer {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-family: sans-serif;
+  }
+    @media (max-width: 992px) {
+      .navbar {
+        padding: 1rem;
       }
-    }
-
-    .custom-navbar {
-      background-color: #1a252f; /* cinza bem suave */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* sombra mais visível para baixo */
-    }
-
-    .custom-navbar .navbar-brand{
-      color: white !important; /* cinza escuro para melhor leitura */
-    }
-
-    .custom-navbar .btn-link,
-    .custom-navbar .nav-link {
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .custom-navbar .btn-link:hover,
-    .custom-navbar .nav-link:hover {
-      color: #dcdcdc !important; /* tom mais claro, suave */
-      transform: scale(1.05); /* leve aumento */
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-      text-decoration: none;
-    }
-
-    /* Botão personalizado, mais escuro e menor */
-    .btn-dark-custom {
-        background-color: #1a252f;
-        border-color: #23272a;
-        color: #fff;
-        font-size: 0.875rem;
-        padding: 0.375rem 0.75rem;
-    }
-
-    .btn-dark-custom:hover {
-        background-color: #fff;
-        border-color: #1c1e21;
-        color: #1c1e21;
-    }
-
-    .custom-shadow {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* sombra leve e elegante */
+      .navbar-nav {
+        text-align: center;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Navbar Superior -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white custom-shadow fixed-top">
-  <div class="container-fluid">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static '' %}" alt="Logo" width="40" height="40" class="me-2">
+        Galeria
+      </a>
 
-    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-      
-      <span class="fw-bold">Galeria</span>
-    </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-      aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
 
-    <div class="collapse navbar-collapse" id="navbarMenu">
-      <ul class="navbar-nav ms-auto d-flex align-items-center">
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="#" data-bs-toggle="modal" data-bs-target="#modalFiltro">
-              <i class="fas fa-filter me-1"></i>Filtrar
+          <!-- 🔹 Dropdown de Artistas -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownArtistas" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Artistas
             </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="{% url 'produtos:configuracao' %}"><i class="fas fa-cog me-1"></i>Configurações</a>
-        </li>
-        <li class="nav-item">
-          <form action="{% url 'logout' %}" method="post" class="m-0 p-0">
-              {% csrf_token %}
-              <button type="submit" class="nav-link text-dark">
-                <i class="fas fa-sign-out-alt me-1"></i> Sair
-              </button>
-            </form>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  <!-- Modal de Filtro -->
-<div class="modal fade" id="modalFiltro" tabindex="-1" aria-labelledby="modalFiltroLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="GET" action="{% url 'filtro_produtos' %}">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalFiltroLabel">Filtrar Produtos</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-
-          {% if statuses %}
-          <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" id="status" name="status">
-              <option value="">Todos</option>
-              {% for st in statuses %}
-                <option value="{{ st.id }}">{{ st.nome }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          {% endif %}
-
-          {% if tipos_obra %}
-          <div class="mb-3">
-            <label for="tipo_obra" class="form-label">Tipo de Obra</label>
-            <select class="form-select" id="tipo_obra" name="tipo_obra">
-              <option value="">Todos</option>
-              {% for tipo in tipos_obra %}
-                <option value="{{ tipo.id }}">{{ tipo.nome }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          {% endif %}
-
-          {% if artistas %}
-          <div class="mb-3">
-            <label for="artista" class="form-label">Artista</label>
-            <select class="form-select" id="artista" name="artista">
-              <option value="">Todos</option>
+            <ul class="dropdown-menu" aria-labelledby="dropdownArtistas">
               {% for artista in artistas %}
-                <option value="{{ artista.id }}">{{ artista.nome }}</option>
+                <li>
+                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?artista={{ artista.id }}">
+                    {{ artista.nome }}
+                  </a>
+                </li>
+              {% empty %}
+                <li><span class="dropdown-item text-muted">Nenhum artista cadastrado</span></li>
               {% endfor %}
-            </select>
-          </div>
-          {% endif %}
+            </ul>
+          </li>
 
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Aplicar Filtro</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-      </form>
+          <!-- 🔹 Dropdown de Tipo de Obra -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownTipoObra" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Tipo de Obra
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownTipoObra">
+              {% for tipo in tipos_obra %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?tipo_obra={{ tipo.id }}">
+                    {{ tipo.nome }}
+                  </a>
+                </li>
+              {% empty %}
+                <li><span class="dropdown-item text-muted">Nenhum tipo encontrado</span></li>
+              {% endfor %}
+            </ul>
+          </li>
+
+          <!-- 🔹 Dropdown de Status -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownStatus" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Status
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownStatus">
+              {% for st in statuses %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?status={{ st.id }}">
+                    {{ st.nome }}
+                  </a>
+                </li>
+              {% empty %}
+                <li><span class="dropdown-item text-muted">Nenhum status encontrado</span></li>
+              {% endfor %}
+            </ul>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'produtos:configuracao' %}">Configurações</a>
+          </li>
+
+          <li class="nav-item">
+            <form action="{% url 'logout' %}" method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link p-0 m-0" style="border: none; background: none;">Sair</button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</div>
+  </nav>
 
-  <!-- Conteúdo Principal -->
-  <div class="content" id="mainContent">
-    <div class="container pt-5">
+  <main>
     {% block content %}{% endblock %}
-</div>
-  </div>
+  </main>
 
-  <!-- Scripts -->
+  <footer>
+    <p>&copy; 2025 <strong>Galeria</strong> — Todos os direitos reservados</p>
+    <div style="margin:10px 0;">
+      <a href="#" style="color:#fff; margin:0 10px; text-decoration:none;">Sobre</a> |
+      <a href="#" style="color:#fff; margin:0 10px; text-decoration:none;">Contato</a> |
+      <a href="#" style="color:#fff; margin:0 10px; text-decoration:none;">Privacidade</a>
+    </div>
+    <div style="margin-top:10px;">
+      <a href="#" style="color:#fff; margin:0 8px; font-size:18px;"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" style="color:#fff; margin:0 8px; font-size:18px;"><i class="fab fa-twitter"></i></a>
+      <a href="#" style="color:#fff; margin:0 8px; font-size:18px;"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" style="color:#fff; margin:0 8px; font-size:18px;"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -6,6 +6,11 @@ from .models import Produto, Artista, TipoObra, Status
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+
+def ver_artista(request, id):
+    artista = get_object_or_404(Artista, id=id)
+    return render(request, 'produtos/mostra_artista.html', {'artista':artista})
+
 @login_required
 def configuracao(request):
     usuario = request.user
@@ -19,6 +24,9 @@ def configuracao(request):
         mensagem = 'Você não tem permissão para acessar esta página.'
         return render(request, 'principal/erro.html', {'mensagem': mensagem})
     return render(request, 'produtos/configuracao.html')
+
+def cadastrar_artistas(request):
+    return render(request, 'produtos/artistas.html')
 
 @login_required
 def cadastrar_produto(request):

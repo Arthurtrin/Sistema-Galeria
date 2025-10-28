@@ -2,27 +2,48 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
-    <div class="card shadow-sm" style="width: 320px;">
-      <div class="card-body">
-        <ul class="nav flex-column">
-          <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{% url 'produtos:cadastrar_produto' %}">
-              <i class="fa-solid fa-plus me-2"></i>cadastrar
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center text-dark" href="{% url 'produtos:artista_tipoobra' %}">
-              <i class="fas fa-layer-group me-2"></i>Definir Artistas, Tipos de Obras e Status
-            </a>
-          </li>
-          <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{% url 'produtos:pg_editar_produto' %}">
-              <i class="fas fa-pen me-2"></i>Editar
-            </a>
-          </li>
-        </ul>
-      </div>
+<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+  <div class="card border-0 shadow-sm rounded-4 p-3" style="width: 340px; background-color: #c2c2c2;">
+    <div class="card-body">
+      <h5 class="text-center mb-4 fw-semibold">Painel Principal</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-3">
+          <a class="nav-link d-flex align-items-center justify-content-center bg-light rounded-3 py-2 shadow-sm text-dark" 
+             href="{% url 'produtos:cadastrar_produto' %}" 
+             style="transition: all 0.2s;">
+            <i class="fa-solid fa-plus me-2"></i> Cadastrar Obra
+          </a>
+        </li>
+        <li class="nav-item mb-3">
+          <a class="nav-link d-flex align-items-center justify-content-center bg-light rounded-3 py-2 shadow-sm text-dark" 
+             href="{% url 'produtos:artista_tipoobra' %}" 
+             style="transition: all 0.2s;">
+            <i class="fas fa-layer-group me-2"></i> Tipos e Status
+          </a>
+        </li>
+        <li class="nav-item mb-3">
+          <a class="nav-link d-flex align-items-center justify-content-center bg-light rounded-3 py-2 shadow-sm text-dark" 
+             href="{% url 'produtos:cadastrar_artistas' %}" 
+             style="transition: all 0.2s;">
+            <i class="fas fa-palette me-2"></i> Artistas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center justify-content-center bg-light rounded-3 py-2 shadow-sm text-dark" 
+             href="{% url 'produtos:pg_editar_produto' %}" 
+             style="transition: all 0.2s;">
+            <i class="fas fa-pen me-2"></i> Editar Produtos
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
+</div>
+
+<style>
+  .nav-link:hover {
+    background-color: #f0f0f0 !important;
+    transform: translateY(-2px);
+  }
+</style>
 {% endblock %}

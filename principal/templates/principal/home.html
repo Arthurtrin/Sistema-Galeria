@@ -1,6 +1,6 @@
 {% extends 'principal/base.html' %}
 {% load static %}
-{% block title %}Galeria{% endblock %}
+{% block title %}Galeria de Artistas{% endblock %}
 
 {% block content %}
 <style>
@@ -11,52 +11,79 @@
     cursor: pointer;
   }
 
-  .modal-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: auto;
-  }
-
   .card img {
     width: 100%;
-    height: auto;
-    display: block;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .letra-section {
+    margin-top: 30px;
+  }
+
+  .letra-titulo {
+    font-size: 2rem;
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+  }
+
+  .artista-nome {
+    text-align: center;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .mensagem-vazia {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 60px;
   }
 </style>
 
 <div class="container mt-4">
-  <div class="row g-3" data-masonry='{"percentPosition": true }'>
-    {% for produto in produtos %}
-      <div class="col-6 col-md-4 col-lg-3">
-        <a href="{% url 'detalhe_produto' produto.id %}" class="text-decoration-none">
-          <div class="card border-0 shadow-sm">
-            {% if produto.imagem %}
-              <img src="{{ produto.imagem.url }}" class="img-fluid rounded" alt="{{ produto.nome }}">
-            {% else %}
-              <img src="{% static 'principal/img/logo.png' %}" class="img-fluid rounded" alt="Imagem não disponível">
-            {% endif %}
-          </div>
-        </a>
+  {% if grupos %}
+    {% for letra, artistas in grupos.items %}
+      <div class="letra-section">
+        <div class="letra-titulo">{{ letra }}</div>
+        <div class="row g-3" data-masonry='{"percentPosition": true }'>
+          {% for artista in artistas %}
+            <div class="col-6 col-md-4 col-lg-3">
+              <a href="{% url 'produtos:ver_artista' artista.id %}" class="text-decoration-none text-dark">
+                <div class="card border-0 shadow-sm">
+                  {% if artista.foto %}
+                    <img src="{{ artista.foto.url }}" alt="{{ artista.nome }}">
+                  {% else %}
+                    <img src="{% static 'principal/img/logo.png' %}" alt="Sem imagem">
+                  {% endif %}
+                  <p class="artista-nome text-center mt-2">{{ artista.nome }}</p>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
-    {% empty %}
-      <p class="text-center">Nenhum produto encontrado.</p>
     {% endfor %}
-  </div>
+  {% else %}
+    <p class="mensagem-vazia text-center mt-5">Nenhum artista cadastrado até o momento.</p>
+  {% endif %}
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const grid = document.querySelector('.row[data-masonry]');
-    const msnry = new Masonry(grid, {
-      itemSelector: '.col-6',
-      percentPosition: true
-    });
-
-    imagesLoaded(grid, function () {
-      msnry.layout();
+    document.querySelectorAll('.row[data-masonry]').forEach(function (grid) {
+      const msnry = new Masonry(grid, {
+        itemSelector: '.col-6',
+        percentPosition: true
+      });
+      imagesLoaded(grid, function () {
+        msnry.layout();
+      });
     });
   });
 </script>
