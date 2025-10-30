@@ -72,7 +72,7 @@
       padding-bottom: 60px;
       max-width: 1200px;
       margin: 0 auto;
-      
+
     }
 
     h1, h2, h3, h4 {
@@ -106,8 +106,7 @@
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static '' %}" alt="Logo" width="40" height="40" class="me-2">
-        Galeria
+        <img src="{% static 'principal/img/logo-athebaldi.png' %}" alt="Logo" width="150" height="40" class="me-2">
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -124,6 +123,11 @@
               Artistas
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownArtistas">
+                <li>
+                  <a class="dropdown-item" href="{% url 'home' %}">
+                    Todos
+                  </a>
+                </li>
               {% for artista in artistas %}
                 <li>
                   <a class="dropdown-item" href="{% url 'produtos:ver_artista' artista.id %}">
