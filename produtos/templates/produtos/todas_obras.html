@@ -1,0 +1,121 @@
+{% extends 'principal/base.html' %}
+{% load static %}
+{% block title %}Todas as Obras{% endblock %}
+
+{% block content %}
+<style>
+  /* Masonry cards */
+  .card-obra {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .card-obra:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .card-obra img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .filtros {
+    margin-bottom: 30px;
+  }
+
+  .filtros select {
+    max-width: 200px;
+    margin-right: 15px;
+  }
+
+  .mensagem-vazia {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 60px;
+  }
+</style>
+
+<div class="container mt-4">
+
+  <h2 class="mb-3 d-flex justify-content-between align-items-center">
+    Todas as Obras
+  </h2>
+
+  <!-- Filtros -->
+  <form method="get" class="filtros d-flex flex-wrap align-items-center" action="{% url 'produtos:filtro_produtos' %}">
+    <select name="artista" class="form-select">
+      <option value="">Todos os Artistas</option>
+      {% for artista in artistas %}
+        <option value="{{ artista.id }}" {% if request.GET.artista == artista.id|stringformat:"s" %}selected{% endif %}>
+          {{ artista.nome }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <select name="tipo_obra" class="form-select">
+      <option value="">Todos os Tipos</option>
+      {% for tipo in tipos %}
+        <option value="{{ tipo.id }}" {% if request.GET.tipo_obra == tipo.id|stringformat:"s" %}selected{% endif %}>
+          {{ tipo.nome }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <select name="status" class="form-select">
+      <option value="">Todos os Status</option>
+      {% for st in status %}
+        <option value="{{ st.id }}" {% if request.GET.status == st.id|stringformat:"s" %}selected{% endif %}>
+          {{ st.nome }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="btn btn-primary ms-2">Filtrar</button>
+  </form>
+
+  {% if obras %}
+    <div class="row g-3" data-masonry='{"percentPosition": true }'>
+      {% for obra in obras %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="{% url 'detalhe_produto' obra.id %}" class="text-decoration-none text-dark">
+            <div class="card card-obra border-0 shadow-sm">
+              {% if obra.imagem %}
+                <img src="{{ obra.imagem.url }}" alt="{{ obra.titulo }}">
+              {% else %}
+                <img src="{% static 'principal/img/logo.png' %}" alt="Sem imagem">
+              {% endif %}
+              <div class="p-2">
+                <p class="mb-1"><strong>{{ obra.titulo }}</strong></p>
+                <p class="mb-0 text-muted">{{ obra.artista.nome }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="mensagem-vazia">Nenhuma obra encontrada com os filtros selecionados.</p>
+  {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.row[data-masonry]').forEach(function (grid) {
+      const msnry = new Masonry(grid, {
+        itemSelector: '.col-6',
+        percentPosition: true
+      });
+      imagesLoaded(grid, function () {
+        msnry.layout();
+      });
+    });
+  });
+</script>
+
+{% endblock %}

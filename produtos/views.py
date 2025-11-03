@@ -5,13 +5,64 @@ from .forms import ProdutoForm, ArtistaForm, TipoObraForm, StatusForm
 from .models import Produto, Artista, TipoObra, Status
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from itertools import groupby
 
 def ver_artista(request, id):
     artista = get_object_or_404(Artista, id=id)
     artistas = Artista.objects.all()
     obras = Produto.objects.filter(artista=artista)
-    return render(request, 'produtos/mostra_artista.html', {'artista':artista, 'artistas':artistas, 'obras':obras})
+    return render(request, 'produtos/mostra_artista.html', {
+        'artista':artista,
+        'artistas':artistas,
+        'obras':obras})
+
+def todosartistas(request):
+    artistas = Artista.objects.all()
+    grupos = {}
+    for letra, grupo in groupby(artistas, key=lambda a: a.nome[0].upper()):
+        grupos[letra] = list(grupo)
+    return render(request, 'produtos/todos_artistas.html', {
+        "artistas": artistas,
+        'grupos':grupos})
+    
+def todasobras(request):
+    artistas = Artista.objects.all()
+    tipos = TipoObra.objects.all()
+    status = Status.objects.all()
+    obras = Produto.objects.all().order_by('-id')
+    return render(request, 'produtos/todas_obras.html', {
+        'artistas':artistas,
+        'tipos':tipos,
+        'status':status,
+        'obras':obras,
+    })
+
+@login_required
+def filtro_produtos(request):
+    # Pega os valores dos filtros da URL
+    status_id = request.GET.get('status', '')
+    tipo_obra_id = request.GET.get('tipo_obra', '')
+    artista_id = request.GET.get('artista', '')
+
+    # Query inicial com todos os produtos, ordenando do mais recente para o mais antigo
+    produtos = Produto.objects.all().order_by('-id')
+
+    # Aplica os filtros se houver
+    if status_id:
+        produtos = produtos.filter(status_id=status_id)
+    if tipo_obra_id:
+        produtos = produtos.filter(tipo_obra_id=tipo_obra_id)
+    if artista_id:
+        produtos = produtos.filter(artista_id=artista_id)
+
+    context = {
+        'obras': produtos,  # ⚠️ no template chamamos de "obras"
+        'tipos': TipoObra.objects.all(),
+        'artistas': Artista.objects.all(),
+        'status': Status.objects.all(),
+    }
+
+    return render(request, 'produtos/todas_obras.html', context)
 
 @login_required
 def configuracao(request):

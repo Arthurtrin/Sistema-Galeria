@@ -21,5 +21,7 @@ urlpatterns = [
     path('produtos/editar/<int:id>/', views.editar_produto, name='editar_produto'),
     path('cadastrar/artistas/', views.cadastrar_artistas, name='cadastrar_artistas'),
     path('artistas/ver/<int:id>', views.ver_artista, name='ver_artista'),
-    
+    path('artistas/ver/todos', views.todosartistas, name='todosartistas'),
+    path('obras/ver/todas', views.todasobras, name='todasobras'),
+    path('produtos/filtro', views.filtro_produtos, name='filtro_produtos'),
 ]

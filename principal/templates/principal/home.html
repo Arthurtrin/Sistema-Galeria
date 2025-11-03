@@ -1,91 +1,144 @@
 {% extends 'principal/base.html' %}
 {% load static %}
-{% block title %}Galeria de Artistas{% endblock %}
-
+{% block title %}Home - Galeria de Artes{% endblock %}
 {% block content %}
+
 <style>
-  .card:hover {
-    transform: scale(1.03);
+  /* Seção de destaque */
+  .hero {
+    background: url("{% static 'principal/img/foto-slide.jpg' %}") no-repeat center center;
+    background-size: cover;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  /* Cards de obras */
+  .card-obra {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     cursor: pointer;
   }
 
-  .card img {
+  .card-obra:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .card-obra img {
     width: 100%;
     height: 220px;
     object-fit: cover;
     border-radius: 8px;
   }
 
-  .letra-section {
-    margin-top: 30px;
-  }
-
-  .letra-titulo {
-    font-size: 2rem;
-    font-weight: bold;
-    border-bottom: 2px solid #ccc;
-    margin-bottom: 20px;
-  }
-
-  .artista-nome {
-    text-align: center;
-    margin-top: 8px;
-    font-weight: 500;
-  }
-
-  .mensagem-vazia {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #666;
+  .secao {
     margin-top: 60px;
+  }
+
+
+  .artista-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .artista-card p {
+    text-align: center;
+    font-weight: 500;
+    margin-top: 8px;
   }
 </style>
 
-<div class="container mt-4">
-    <h5>Galeria / Artistas</h5>
-  {% if grupos %}
-    {% for letra, artistas in grupos.items %}
-      <div class="letra-section">
-        <div class="letra-titulo">{{ letra }}</div>
-        <div class="row g-3" data-masonry='{"percentPosition": true }'>
-          {% for artista in artistas %}
-            <div class="col-6 col-md-4 col-lg-3">
-              <a href="{% url 'produtos:ver_artista' artista.id %}" class="text-decoration-none text-dark">
-                <div class="card border-0 shadow-sm">
-                  {% if artista.foto %}
-                    <img src="{{ artista.foto.url }}" alt="{{ artista.nome }}">
-                  {% else %}
-                    <img src="{% static 'principal/img/logo.png' %}" alt="Sem imagem">
-                  {% endif %}
-                  <p class="artista-nome text-center mt-2">{{ artista.nome }}</p>
-                </div>
-              </a>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p class="mensagem-vazia text-center mt-5">Nenhum artista cadastrado até o momento.</p>
-  {% endif %}
+<!-- Hero / Destaque -->
+<div class="hero">
+  <h1>Bem-vindo à Galeria</h1>
 </div>
 
+<div class="container mt-5">
+  
+  <!-- Obras  -->
+  <div class="secao">
 
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.row[data-masonry]').forEach(function (grid) {
-      const msnry = new Masonry(grid, {
-        itemSelector: '.col-6',
-        percentPosition: true
-      });
-      imagesLoaded(grid, function () {
-        msnry.layout();
-      });
-    });
-  });
-</script>
+    <div class="d-flex justify-content-between align-items-center mb-3" style="font-weight: 600; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 30px;">
+      <h2 class="mb-0">Obras </h2>
+      <a href="{% url 'produtos:todasobras' %}" class="text-decoration-none">Ver todas</a>
+    </div>
+
+    <div class="row g-4">
+      {% for obra in obras_destaque %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="{% url 'detalhe_produto' obra.id %}" class="text-decoration-none text-dark">
+            <div class="card card-obra border-0 shadow-sm">
+              {% if obra.imagem %}
+                <img src="{{ obra.imagem.url }}" alt="{{ obra.titulo }}">
+              {% else %}
+                <img src="{% static 'principal/img/logo.png' %}" alt="Sem imagem">
+              {% endif %}
+              <p class="mt-2">{{ obra.titulo }}</p>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <p class="text-center">Nenhuma obra em destaque no momento.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Artistas -->
+  <div class="secao">
+    <div class="d-flex justify-content-between align-items-center mb-3" style="font-weight: 600; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 30px;">
+      <h2 class="mb-0">Artistas</h2>
+      <a href="{% url 'produtos:todosartistas' %}" class="text-decoration-none">Ver todos</a>
+    </div>
+    <div class="row g-4">
+      {% for artista in artistas_destaque %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <a href="{% url 'produtos:ver_artista' artista.id %}" class="text-decoration-none text-dark">
+            <div class="card artista-card border-0 shadow-sm">
+              {% if artista.foto %}
+                <img src="{{ artista.foto.url }}" alt="{{ artista.nome }}">
+              {% else %}
+                <img src="{% static 'principal/img/logo.png' %}" alt="Sem imagem">
+              {% endif %}
+              <p>{{ artista.nome }}</p>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <p class="text-center">Nenhum artista em destaque no momento.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Seção Sobre -->
+  <div class="secao text-center">
+    <h2 style="font-weight: 600; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 30px;">Sobre a Galeria</h2>
+    <p style="max-width: 800px; margin: 0 auto; color: #555;">
+      Nossa galeria apresenta obras de artistas contemporâneos, permitindo que visitantes descubram,
+      apreciem e adquiram arte de alta qualidade. Cada obra é cuidadosamente selecionada para inspirar
+      e encantar todos os públicos.
+    </p>
+  </div>
+
+</div>
+
 {% endblock %}

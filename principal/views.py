@@ -17,6 +17,8 @@ def home(request):
     artistas = Artista.objects.all().order_by('nome')
     grupos = {}
     obras = Produto.objects.all()
+    obras_destaque = Produto.objects.all().order_by('-id')[:8]
+    artistas_destaque = Artista.objects.all().order_by('-id')[:8]
     for letra, grupo in groupby(artistas, key=lambda a: a.nome[0].upper()):
         grupos[letra] = list(grupo)
     return render(request, 'principal/home.html', {
@@ -25,9 +27,9 @@ def home(request):
         "artistas": artistas,
         "statuses": status,
         'grupos':grupos,
-        'obras':obras})
-
-
+        'obras':obras,
+        'obras_destaque': obras_destaque,
+        'artistas_destaque': artistas_destaque})
 
 @login_required
 def filtro_produtos(request):
