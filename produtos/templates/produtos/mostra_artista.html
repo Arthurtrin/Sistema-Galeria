@@ -66,6 +66,16 @@
       text-align: center;
     }
   }
+
+  .obra-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.obra-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
 </style>
 
 <div class="artista-container">
@@ -87,5 +97,37 @@
       </a>
     {% endif %}
   </div>
+</div>
+
+<hr class="my-4">
+
+<h2>Obras de {{ artista.nome }}</h2>
+
+<div class="obras-container">
+  {% if obras %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for obra in obras %}
+        <div class="col">
+          <a href="{% url 'detalhe_produto' obra.id %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm obra-card">
+              {% if obra.imagem %}
+                <img src="{{ obra.imagem.url }}" class="card-img-top" alt="{{ obra.nome }}">
+              {% else %}
+                <img src="{% static 'principal/img/sem-imagem.png' %}" class="card-img-top" alt="Sem imagem">
+              {% endif %}
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ obra.nome }}</h5>
+                {% if obra.descricao %}
+                  <p class="card-text text-muted small">{{ obra.descricao|truncatewords:15 }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Nenhuma obra cadastrada para este artista.</p>
+  {% endif %}
 </div>
 {% endblock %}

@@ -10,7 +10,8 @@ from django.urls import reverse
 def ver_artista(request, id):
     artista = get_object_or_404(Artista, id=id)
     artistas = Artista.objects.all()
-    return render(request, 'produtos/mostra_artista.html', {'artista':artista, 'artistas':artistas})
+    obras = Produto.objects.filter(artista=artista)
+    return render(request, 'produtos/mostra_artista.html', {'artista':artista, 'artistas':artistas, 'obras':obras})
 
 @login_required
 def configuracao(request):
@@ -73,7 +74,7 @@ def cadastrar_tipoobra(request):
 def excluir_tipoobra(request, tipo_id):
     tipo = get_object_or_404(TipoObra, id=tipo_id)
     tipo.delete()
-    return redirect ('produtos:artista_tipoobra')  
+    return redirect ('produtos:artista_tipoobra')
 
 @login_required
 def cadastrar_artista(request):

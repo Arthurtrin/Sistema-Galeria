@@ -1,0 +1,68 @@
+{% load static %}
+
+<div class="galeria-container">
+  {% if obras %}
+    <div class="masonry">
+      {% for obra in obras %}
+        {% if obra.imagem %}
+          <div class="masonry-item">
+            <img src="{{ obra.imagem.url }}" alt="Obra de {{ obra.artista.nome }}">
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Nenhuma obra cadastrada.</p>
+  {% endif %}
+</div>
+
+<style>
+  .galeria-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Layout tipo "masonry" com CSS columns */
+  .masonry {
+    column-count: 4; /* número de colunas */
+    column-gap: 15px;
+  }
+
+  @media (max-width: 992px) {
+    .masonry {
+      column-count: 3;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .masonry {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .masonry {
+      column-count: 1;
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .masonry-item img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .masonry-item img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  }
+</style>
