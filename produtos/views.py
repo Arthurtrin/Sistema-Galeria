@@ -6,69 +6,135 @@ from .models import Produto, Artista, TipoObra, Status
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from itertools import groupby
+from .utils import *
+from principal.utils import *
 
 def ver_artista(request, id):
+    """
+    Exibe a página de detalhes de um artista específico.
+
+    A função busca o artista pelo ID informado e carrega todas as obras (produtos)
+    associadas a ele. Também envia a lista completa de artistas para permitir
+    navegação entre perfis.
+
+    Parâmetros:
+        request (HttpRequest): Objeto de requisição HTTP.
+        id (int): ID do artista a ser exibido.
+
+    Retorna:
+        HttpResponse: Página 'produtos/mostra_artista.html' renderizada com:
+            - o artista selecionado,
+            - todas as suas obras (produtos),
+            - e a lista completa de artistas cadastrados.
+    """
+    # Busca o artista pelo ID; retorna erro 404 se não for encontrado
     artista = get_object_or_404(Artista, id=id)
-    artistas = Artista.objects.all()
-    obras = Produto.objects.filter(artista=artista)
+
+    # Renderiza o template com os dados do artista e suas obras
     return render(request, 'produtos/mostra_artista.html', {
-        'artista':artista,
-        'artistas':artistas,
-        'obras':obras})
+        'artista': artista,                                      # Artista atual
+        'artistas': Artista.objects.all().order_by('nome'),      # Lista completa de artistas
+        'obras': Produto.objects.filter(artista=artista)         # Obras associadas ao artista
+    })
 
 def todosartistas(request):
+    """
+    Exibe a página com todos os artistas cadastrados no sistema.
+
+    A função obtém todos os artistas do banco de dados e os agrupa
+    pela primeira letra do nome, para facilitar a navegação no template.
+
+    Parâmetros:
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Retorna:
+        HttpResponse: Página 'produtos/todos_artistas.html' renderizada com:
+            - a lista completa de artistas,
+            - e os grupos de artistas organizados por letra inicial.
+    """
+    # Busca todos os artistas cadastrados
     artistas = Artista.objects.all()
+
+    # Cria um dicionário onde as chaves são letras e os valores são listas de artistas
     grupos = {}
     for letra, grupo in groupby(artistas, key=lambda a: a.nome[0].upper()):
         grupos[letra] = list(grupo)
+
+    # Renderiza o template com os artistas e seus respectivos grupos
     return render(request, 'produtos/todos_artistas.html', {
-        "artistas": artistas,
-        'grupos':grupos})
+        "artistas": artistas,  # Lista completa de artistas
+        'grupos': grupos       # Artistas agrupados pela letra inicial do nome
+    })
     
 def todasobras(request):
-    artistas = Artista.objects.all()
-    tipos = TipoObra.objects.all()
-    status = Status.objects.all()
-    obras = Produto.objects.all().order_by('-id')
+    """
+    Exibe a página com todas as obras (produtos) cadastradas no sistema.
+
+    A função carrega todas as obras, bem como os artistas, tipos de obra e status,
+    para permitir navegação, filtragem e exibição completa no template.
+
+    Parâmetros:
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Retorna:
+        HttpResponse: Página 'produtos/todas_obras.html' renderizada com:
+            - todas as obras cadastradas (ordenadas do mais recente ao mais antigo),
+            - a lista completa de artistas,
+            - a lista de tipos de obra,
+            - e a lista de status disponíveis.
+    """
+    # Renderiza o template com todos os dados necessários
     return render(request, 'produtos/todas_obras.html', {
-        'artistas':artistas,
-        'tipos':tipos,
-        'status':status,
-        'obras':obras,
+        'artistas': Artista.objects.all(),             # Lista completa de artistas
+        'tipos': TipoObra.objects.all(),               # Lista de tipos de obra
+        'status': Status.objects.all(),                # Lista de status disponíveis
+        'obras': Produto.objects.all().order_by('-id'),# Todas as obras (do mais novo ao mais antigo)
     })
 
 @login_required
 def filtro_produtos(request):
-    # Pega os valores dos filtros da URL
+    """
+    Filtra e exibe as obras de acordo com os parâmetros enviados via requisição GET.
+
+    A função permite ao usuário refinar a listagem de obras conforme três critérios opcionais:
+    - status da obra,
+    - tipo de obra,
+    - artista responsável.
+
+    Se um ou mais filtros não forem informados, o sistema exibirá todos os registros
+    correspondentes aos filtros aplicados. O resultado é mostrado na página de listagem geral
+    de obras.
+
+    Parâmetros:
+        request (HttpRequest): Objeto de requisição HTTP contendo os parâmetros de filtro
+        ('status', 'tipo_obra' e 'artista').
+
+    Retorna:
+        HttpResponse: Página 'produtos/todas_obras.html' renderizada com:
+            - as obras filtradas,
+            - as listas completas de artistas, tipos de obra e status disponíveis.
+    """
+
+    # Obtém os valores dos filtros passados pela URL (ou vazios, se não existirem)
     status_id = request.GET.get('status', '')
     tipo_obra_id = request.GET.get('tipo_obra', '')
     artista_id = request.GET.get('artista', '')
 
-    # Query inicial com todos os produtos, ordenando do mais recente para o mais antigo
-    produtos = Produto.objects.all().order_by('-id')
-
-    # Aplica os filtros se houver
-    if status_id:
-        produtos = produtos.filter(status_id=status_id)
-    if tipo_obra_id:
-        produtos = produtos.filter(tipo_obra_id=tipo_obra_id)
-    if artista_id:
-        produtos = produtos.filter(artista_id=artista_id)
-
+    # Monta o contexto com os produtos filtrados e as listas auxiliares
     context = {
-        'obras': produtos,  # ⚠️ no template chamamos de "obras"
-        'tipos': TipoObra.objects.all(),
-        'artistas': Artista.objects.all(),
-        'status': Status.objects.all(),
+        'obras': filtra_produtos(status_id, tipo_obra_id, artista_id),  # Resultado da filtragem
+        'tipos': TipoObra.objects.all(),                                # Lista de tipos de obra
+        'artistas': Artista.objects.all(),                              # Lista de artistas
+        'status': Status.objects.all(),                                 # Lista de status
     }
 
+    # Renderiza o template com os resultados
     return render(request, 'produtos/todas_obras.html', context)
 
 @login_required
 def configuracao(request):
-    usuario = request.user
     try:
-        perfil = Perfil.objects.get(usuario=usuario)
+        perfil = Perfil.objects.get(usuario=request.user)
     except Perfil.DoesNotExist:
         mensagem = 'Perfil não encontrado'
         return render(request, 'principal/erro.html', {'mensagem': mensagem})
@@ -76,7 +142,10 @@ def configuracao(request):
     if perfil.tipo not in ['gerenciador', 'supervisor']:
         mensagem = 'Você não tem permissão para acessar esta página.'
         return render(request, 'principal/erro.html', {'mensagem': mensagem})
-    return render(request, 'produtos/configuracao.html')
+    return render(request, 'produtos/configuracao.html', {
+        'usuario_gerenciador': usuarioehgerenciador(request.user),  # Verifica se o usuário atual possui perfil de gerenciador
+        })
+
 
 def cadastrar_artistas(request):
     return render(request, 'produtos/artistas.html')

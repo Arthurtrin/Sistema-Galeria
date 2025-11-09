@@ -144,48 +144,12 @@
             </ul>
           </li>
           
-          <!-- 🔹 Dropdown de Tipo de Obra 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownTipoObra" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Tipo de Obra
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownTipoObra">
-              {% for tipo in tipos_obra %}
-                <li>
-                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?tipo_obra={{ tipo.id }}">
-                    {{ tipo.nome }}
-                  </a>
-                </li>
-              {% empty %}
-                <li><span class="dropdown-item text-muted">Nenhum tipo encontrado</span></li>
-              {% endfor %}
-            </ul>
-          </li>-->
-
-          <!-- 🔹 Dropdown de Status 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownStatus" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Status
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownStatus">
-              {% for st in statuses %}
-                <li>
-                  <a class="dropdown-item" href="{% url 'filtro_produtos' %}?status={{ st.id }}">
-                    {{ st.nome }}
-                  </a>
-                </li>
-              {% empty %}
-                <li><span class="dropdown-item text-muted">Nenhum status encontrado</span></li>
-              {% endfor %}
-            </ul>
-          </li>-->
-
-
+      
+          {% if usuario_gerenciador %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'produtos:configuracao' %}">Configurações</a>
           </li>
+          {% endif %}
 
           <li class="nav-item">
             <form action="{% url 'logout' %}" method="post" class="d-inline">

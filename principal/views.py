@@ -1,68 +1,33 @@
-from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-from usuarios.models import Perfil, Chave_Gerenciador
 from produtos.models import Produto, Artista, TipoObra, Status
-from itertools import groupby
+from .utils import *
 
 @login_required
 def home(request):
-    artistas = Artista.objects.all()
-    tipos = TipoObra.objects.all()
-    status = Status.objects.all()
-    produtos = Produto.objects.all().order_by('-id')
-    artistas = Artista.objects.all().order_by('nome')
-    grupos = {}
-    obras = Produto.objects.all()
-    obras_destaque = Produto.objects.all().order_by('-id')[:8]
-    artistas_destaque = Artista.objects.all().order_by('-id')[:8]
-    for letra, grupo in groupby(artistas, key=lambda a: a.nome[0].upper()):
-        grupos[letra] = list(grupo)
+    """
+    Exibe a página inicial do sistema.
+
+    A função carrega informações sobre obras recentes, artistas recentes, bem como todos os artistas,
+    além de identificar se o usuário atual é um gerenciador. 
+    Também agrupa os artistas por ordem alfabetica para facilitar a navegação.
+
+    Parâmetros:
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Retorna:
+        HttpResponse: Página 'principal/home.html' renderizada com os dados de contexto.
+    """
+
+    # Renderiza a página inicial com os dados necessários
     return render(request, 'principal/home.html', {
-        "produtos": produtos,
-        "tipos_obra": tipos,
-        "artistas": artistas,
-        "statuses": status,
-        'grupos':grupos,
-        'obras':obras,
-        'obras_destaque': obras_destaque,
-        'artistas_destaque': artistas_destaque})
-
-@login_required
-def filtro_produtos(request):
-    status_id = request.GET.get('status', '')
-    tipo_obra_id = request.GET.get('tipo_obra', '')
-    artista_id = request.GET.get('artista', '')
-
-    produtos = Produto.objects.all().order_by('-id')
-
-    if status_id:
-        produtos = produtos.filter(status_id=status_id)
-
-    if tipo_obra_id:
-        produtos = produtos.filter(tipo_obra_id=tipo_obra_id)
-
-    if artista_id:
-        produtos = produtos.filter(artista_id=artista_id)
-
-    context = {
-        'produtos': produtos,
-        'tipos_obra': TipoObra.objects.all(),
-        'artistas': Artista.objects.all(),
-        'statuses': Status.objects.all(),
-        'filtros': {
-            'status': status_id,
-            'tipo_obra': tipo_obra_id,
-            'artista': artista_id,
-        }
-    }
-
-    return render(request, 'principal/home.html', context)
+        "artistas":Artista.objects.all().order_by('nome'), # Busca todos os artistas e ordena alfabeticamente
+        'obras_recentes': Produto.objects.all().order_by('-id')[:8], # Busca as ultimas 8 obras cadastradas
+        'artistas_recentes': Artista.objects.all().order_by('-id')[:8], # Busca os ultimos 8 artistas cadastrados
+        'usuario_gerenciador': usuarioehgerenciador(request.user),  # Verifica se o usuário atual possui perfil de gerenciador
+        })
 
 @login_required
 def detalhe_produto(request, produto_id):
-    produto = get_object_or_404(Produto, id=produto_id)
-    return render(request, 'produtos/detalhe_produto.html', {'produto': produto})
+    return render(request, 'produtos/detalhe_produto.html',{
+        'produto': get_object_or_404(Produto, id=produto_id)})

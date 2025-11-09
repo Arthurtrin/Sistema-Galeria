@@ -84,7 +84,7 @@
     </div>
 
     <div class="row g-4">
-      {% for obra in obras_destaque %}
+      {% for obra in obras_recentes %}
         <div class="col-6 col-md-4 col-lg-3">
           <a href="{% url 'detalhe_produto' obra.id %}" class="text-decoration-none text-dark">
             <div class="card card-obra border-0 shadow-sm">
@@ -110,7 +110,7 @@
       <a href="{% url 'produtos:todosartistas' %}" class="text-decoration-none">Ver todos</a>
     </div>
     <div class="row g-4">
-      {% for artista in artistas_destaque %}
+      {% for artista in artistas_recentes %}
         <div class="col-6 col-md-4 col-lg-3">
           <a href="{% url 'produtos:ver_artista' artista.id %}" class="text-decoration-none text-dark">
             <div class="card artista-card border-0 shadow-sm">
