@@ -10,12 +10,32 @@ Bem-vindo ao **Sistema de Galeria**, uma aplicação web simples, moderna e func
 
 ## ✨ Funcionalidades
 
-- ✅ Upload de imagens
-- ✅ Visualização em grade responsiva
-- ✅ Edição e exclusão de imagens
-- ✅ Organização por categorias (opcional)
-- ✅ Interface amigável e responsiva
 
+
+
+🖼️ Gerenciamento de Obras
+-  Upload de imagens
+-  Visualização em grid responsivo
+-  Miniaturas otimizadas
+-  Suporte a imagens de diferentes proporções
+  
+📝 Informações das Obras
+- Nome da obra
+- Nome do artista]
+- Categoria (opcional)
+- Descrição
+- Data de criação
+  
+🔧 Ações Administrativas
+- Editar informações
+- Excluir obras
+- Visualizar detalhes em tela dedicada
+  
+🔍 Recursos Extras
+- Filtro por artista
+- Filtro por categoria
+- Ordenação por data
+- Interface amigável, limpa e moderna
 ---
 
 ## 🧰 Tecnologias utilizadas
